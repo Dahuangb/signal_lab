@@ -5,6 +5,7 @@ export function convolve(signal1: Signal, signal2: Signal): Signal {
   const len2 = signal2.samples.length;
   const outputLength = len1 + len2 - 1;
   const samples = new Float64Array(outputLength);
+  const dt = 1 / signal1.sampleRate;
 
   for (let n = 0; n < outputLength; n++) {
     let sum = 0;
@@ -14,7 +15,7 @@ export function convolve(signal1: Signal, signal2: Signal): Signal {
         sum += signal1.samples[xIndex] * signal2.samples[k];
       }
     }
-    samples[n] = sum;
+    samples[n] = sum * dt;
   }
 
   const totalDuration = signal1.duration + signal2.duration;
@@ -43,6 +44,7 @@ export function convolveStepByStep(
 ): ConvolutionStep {
   const len1 = signal1.samples.length;
   const len2 = signal2.samples.length;
+  const dt = 1 / signal1.sampleRate;
 
   const partial = new Float64Array(len2);
   for (let i = 0; i < len2; i++) {
@@ -59,6 +61,8 @@ export function convolveStepByStep(
       outputSample += signal1.samples[k] * signal2.samples[hIndex];
     }
   }
+  
+  outputSample *= dt;
 
   return { shiftIndex: step, partial, outputSample, overlapStart, overlapEnd };
 }

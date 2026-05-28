@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type SignalType = "square" | "sawtooth" | "triangle";
 export type ModulationType = "BPSK" | "QPSK" | "16QAM";
-export type SamplingMode = "normal" | "undersample";
+
 export type AMFMType = "AM" | "FM";
 
 export interface FourierParams {
@@ -21,7 +21,6 @@ export interface ConstellationParams {
 export interface SamplingParams {
   signalFrequency: number;
   sampleFrequency: number;
-  mode: SamplingMode;
 }
 
 export interface ConvolutionParams {
@@ -65,9 +64,8 @@ export const useParamsStore = create<AppState>((set) => ({
     showDecisionBoundary: true,
   },
   sampling: {
-    signalFrequency: 5,
-    sampleFrequency: 12,
-    mode: "normal",
+    signalFrequency: 10,
+    sampleFrequency: 25,
   },
   convolution: {
     signalType1: "rectangular",

@@ -25,7 +25,7 @@ export function generateConstellation(
     case "16QAM": {
       const levels = [-3, -1, 1, 3];
       const points: ConstellationPoint[] = [];
-      for (const q of levels) {
+      for (const q of [...levels].reverse()) {
         for (const i of levels) {
           let bits = "";
           bits += i > 0 ? "1" : "0";
@@ -44,25 +44,28 @@ export function generateConstellation(
 
 export function addAWGN(
   points: ConstellationPoint[],
-  noisePower: number
+  noisePower: number,
+  pointsPerSymbol: number = 200
 ): { i: number; q: number; symbol: string }[] {
   const result: { i: number; q: number; symbol: string }[] = [];
   const std = Math.sqrt(noisePower / 2);
 
   for (const p of points) {
-    let u1: number, u2: number, s: number;
-    do {
-      u1 = 2 * Math.random() - 1;
-      u2 = 2 * Math.random() - 1;
-      s = u1 * u1 + u2 * u2;
-    } while (s >= 1 || s === 0);
+    for (let k = 0; k < pointsPerSymbol; k++) {
+      let u1: number, u2: number, s: number;
+      do {
+        u1 = 2 * Math.random() - 1;
+        u2 = 2 * Math.random() - 1;
+        s = u1 * u1 + u2 * u2;
+      } while (s >= 1 || s === 0);
 
-    const factor = Math.sqrt((-2 * Math.log(s)) / s);
-    result.push({
-      i: p.i + u1 * factor * std,
-      q: p.q + u2 * factor * std,
-      symbol: p.symbol,
-    });
+      const factor = Math.sqrt((-2 * Math.log(s)) / s);
+      result.push({
+        i: p.i + u1 * factor * std,
+        q: p.q + u2 * factor * std,
+        symbol: p.symbol,
+      });
+    }
   }
 
   return result;

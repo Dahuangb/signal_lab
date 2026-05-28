@@ -10,13 +10,19 @@ import { computeSpectrum } from "@/engine/fft";
 import {
   drawGrid,
   drawAxes,
+  drawAxisLabels,
   drawWaveform,
   drawSpectrum,
   defaultRenderParams,
 } from "@/renderer/CanvasCore";
 
-const modulationFormula = katex.renderToString(
-  "s_{AM}(t) = [1 + m \\cdot x(t)] \\cos(\\omega_c t)",
+const amFormula = katex.renderToString(
+  "s_{AM}(t) = [A_c + m(t)] \\cos(2\\pi f_c t)",
+  { throwOnError: false }
+);
+
+const fmFormula = katex.renderToString(
+  "s_{FM}(t) = A_c \\cos\\left(2\\pi f_c t + 2\\pi k_f \\int m(\\tau)d\\tau \\right)",
   { throwOnError: false }
 );
 
@@ -41,8 +47,8 @@ export default function Modulation() {
     if (modulationType === "AM") {
       return modulateAM(carrier(), message(), modulationIndex);
     }
-    return modulateFM(carrierFrequency, message(), sr, modulationIndex);
-  }, [modulationType, carrier, message, modulationIndex, carrierFrequency]);
+    return modulateFM(carrierFrequency, message(), messageFrequency, sr, modulationIndex);
+  }, [modulationType, carrier, message, modulationIndex, carrierFrequency, messageFrequency]);
 
   const drawThreeWaves = useCallback(
     (ctx: CanvasRenderingContext2D, w: number, h: number) => {
@@ -50,6 +56,7 @@ export default function Modulation() {
       params.viewport = { xMin: 0, xMax: dur, yMin: -2, yMax: 2.5 };
       drawGrid(ctx, params.viewport, w, h, params);
       drawAxes(ctx, params.viewport, w, h, params);
+      drawAxisLabels(ctx, params.viewport, w, h, "时间", "幅值", "s", "");
 
       const msg = message();
       const car = carrier();
@@ -120,6 +127,7 @@ export default function Modulation() {
       };
       drawGrid(ctx, params.viewport, w, h, params);
       drawAxes(ctx, params.viewport, w, h, params);
+      drawAxisLabels(ctx, params.viewport, w, h, "频率", "幅值", "Hz", "");
       drawSpectrum(
         ctx,
         spectrum.magnitudes,
@@ -173,7 +181,107 @@ export default function Modulation() {
     <ModuleLayout
       title="AM / FM 调制"
       formula={
-        <div dangerouslySetInnerHTML={{ __html: modulationFormula }} />
+        <div className="flex flex-col gap-4">
+          <div className="p-4 rounded-lg bg-lab-surface/30 border border-lab-border">
+            <div className="text-xs text-lab-muted mb-2 font-mono uppercase tracking-wider">
+              为什么要进行调制？
+            </div>
+            <ul className="text-xs text-lab-text space-y-2 leading-relaxed">
+              <li className="flex gap-2">
+                <span className="text-lab-cyan">•</span>
+                <span>
+                  <strong className="text-lab-cyan font-normal">天线尺寸限制：</strong>
+                  有效发射电磁波要求天线长度至少为波长的 1/4。语音信号（如 3kHz）波长达 100 公里，天线无法实现。调制到高频（如 100MHz）后波长缩短为 3 米。
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-lab-cyan">•</span>
+                <span>
+                  <strong className="text-lab-cyan font-normal">频分复用 (FDM)：</strong>
+                  如果所有电台都直接发送语音，信号会相互干扰。调制可以将不同电台的信号"搬移"到不同频率（如 90.1MHz、103.9MHz），实现空中互不干扰。
+                </span>
+              </li>
+            </ul>
+          </div>
+          
+          <div className="p-4 rounded-lg bg-lab-surface/30 border border-lab-border">
+            <div className="text-xs text-lab-muted mb-2 font-mono uppercase tracking-wider">
+              {modulationType === "AM" ? "幅度调制 (AM) 公式" : "频率调制 (FM) 公式"}
+            </div>
+            <div 
+              className="text-sm font-mono katex-wrapper mb-3" 
+              dangerouslySetInnerHTML={{ __html: modulationType === "AM" ? amFormula : fmFormula }} 
+            />
+            
+            {modulationType === "AM" ? (
+              <div className="space-y-2 mt-3">
+                <div className="flex items-start gap-2 p-2 rounded bg-lab-bg/40">
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-[#334466] mt-1.5" />
+                  <div>
+                    <span 
+                      className="text-xs text-[#334466] font-mono katex-wrapper" 
+                      dangerouslySetInnerHTML={{ __html: katex.renderToString("A_c \\cos(2\\pi f_c t)", { throwOnError: false }) }}
+                    />
+                    <span className="text-xs text-lab-muted ml-1">— 载波 (Carrier)。f_c 是载波频率，即频谱中心的高频振荡。</span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 p-2 rounded bg-lab-bg/40">
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-[#ff9100] mt-1.5" />
+                  <div>
+                    <span 
+                      className="text-xs text-[#ff9100] font-mono katex-wrapper"
+                      dangerouslySetInnerHTML={{ __html: katex.renderToString("m(t)", { throwOnError: false }) }}
+                    />
+                    <span className="text-xs text-lab-muted ml-1">— 调制信号 / 消息 (Message)。即你要发送的低频语音或数据。</span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 p-2 rounded bg-lab-bg/40">
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-[#00e5ff] mt-1.5" />
+                  <div>
+                    <span 
+                      className="text-xs text-[#00e5ff] font-mono katex-wrapper"
+                      dangerouslySetInnerHTML={{ __html: katex.renderToString("[A_c + m(t)]", { throwOnError: false }) }}
+                    />
+                    <span className="text-xs text-lab-muted ml-1">— 瞬时幅度。AM 将信息附加在载波的幅度（包络）上。</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2 mt-3">
+                <div className="flex items-start gap-2 p-2 rounded bg-lab-bg/40">
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-[#334466] mt-1.5" />
+                  <div>
+                    <span 
+                      className="text-xs text-[#334466] font-mono katex-wrapper"
+                      dangerouslySetInnerHTML={{ __html: katex.renderToString("f_c", { throwOnError: false }) }}
+                    />
+                    <span className="text-xs text-lab-muted ml-1">— 载波频率。信号未受调制时的中心频率。</span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 p-2 rounded bg-lab-bg/40">
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-[#ff9100] mt-1.5" />
+                  <div>
+                    <span 
+                      className="text-xs text-[#ff9100] font-mono katex-wrapper"
+                      dangerouslySetInnerHTML={{ __html: katex.renderToString("m(\\tau)", { throwOnError: false }) }}
+                    />
+                    <span className="text-xs text-lab-muted ml-1">— 调制信号。它的幅度大小决定了载波频率偏移的程度。</span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 p-2 rounded bg-lab-bg/40">
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-[#00e5ff] mt-1.5" />
+                  <div>
+                    <span 
+                      className="text-xs text-[#00e5ff] font-mono katex-wrapper"
+                      dangerouslySetInnerHTML={{ __html: katex.renderToString("k_f \\int m(\\tau)d\\tau", { throwOnError: false }) }}
+                    />
+                    <span className="text-xs text-lab-muted ml-1">— 相位偏移。FM 调制中，瞬时频率的变化正比于 m(t)，因此总相位是 m(t) 的积分。</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       }
       controls={
         <>

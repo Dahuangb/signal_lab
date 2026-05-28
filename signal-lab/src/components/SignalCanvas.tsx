@@ -22,15 +22,22 @@ export default function SignalCanvas({
 
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
+    if (className.includes("w-full")) {
+      canvas.style.width = "100%";
+      canvas.style.height = className.includes("h-full") ? "100%" : "auto";
+    } else {
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+    }
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    ctx.save();
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, width, height);
     draw(ctx, width, height);
+    ctx.restore();
   }, [draw, width, height, dpr]);
 
   useEffect(() => {

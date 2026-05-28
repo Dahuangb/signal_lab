@@ -23,18 +23,22 @@ export function modulateAM(
 export function modulateFM(
   carrierFreq: number,
   message: Signal,
+  messageFreq: number,
   sampleRate: number,
   modulationIndex: number,
   carrierAmplitude = 1
 ): Signal {
   const length = message.samples.length;
   const samples = new Float64Array(length);
-  const freqDeviation = modulationIndex * Math.max(...Array.from(message.samples).map(Math.abs));
+  // freqDeviation = beta * f_m
+  const freqDeviation = modulationIndex * messageFreq;
+  
+  const maxAmp = Math.max(...Array.from(message.samples).map(Math.abs));
 
   let phase = 0;
   for (let i = 0; i < length; i++) {
-    const t = i / sampleRate;
-    const instantaneousFreq = carrierFreq + freqDeviation * message.samples[i];
+    const normalizedMsg = maxAmp === 0 ? 0 : message.samples[i] / maxAmp;
+    const instantaneousFreq = carrierFreq + freqDeviation * normalizedMsg;
     phase += (2 * Math.PI * instantaneousFreq) / sampleRate;
     samples[i] = carrierAmplitude * Math.cos(phase);
   }
