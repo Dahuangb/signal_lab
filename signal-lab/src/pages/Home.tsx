@@ -178,6 +178,16 @@ const courseCategories = [
         gradient: "from-red-500/20 to-red-500/5",
         border: "border-red-500/30",
         hover: "hover:border-red-500/60",
+      },
+      {
+        id: "shannon",
+        title: "香农信道容量极限",
+        question: "无限的带宽能带来无限的容量吗？",
+        formula: "C = B \\log_2(1 + S/N)",
+        icon: Activity,
+        gradient: "from-blue-500/20 to-blue-500/5",
+        border: "border-blue-500/30",
+        hover: "hover:border-blue-500/60",
       }
     ]
   }

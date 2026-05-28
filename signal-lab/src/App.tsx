@@ -18,6 +18,7 @@ import CircularConv from "@/pages/CircularConv";
 import MatchedFilter from "@/pages/MatchedFilter";
 import ImpulseResponse from "@/pages/ImpulseResponse";
 import GroupDelay from "@/pages/GroupDelay";
+import Shannon from "@/pages/Shannon";
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/circular" element={<CircularConv />} />
         <Route path="/matched" element={<MatchedFilter />} />
         <Route path="/group-delay" element={<GroupDelay />} />
+        <Route path="/shannon" element={<Shannon />} />
       </Routes>
     </Router>
   );
