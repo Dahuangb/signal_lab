@@ -1,3 +1,4 @@
+import InlineMath from "@/components/InlineMath";
 import { useCallback, useState } from "react";
 import katex from "katex";
 import ModuleLayout from "@/components/ModuleLayout";
@@ -253,7 +254,7 @@ export default function GroupDelay() {
             </p>
             <div className="text-sm font-mono katex-wrapper my-2" dangerouslySetInnerHTML={{ __html: phaseKatex }} />
             <p className="text-xs text-lab-text leading-relaxed">
-              这就要求相位 $\phi(\omega)$ 必须是频率 $\omega$ 的线性函数（线性相位 FIR 滤波器的特长）。
+              这就要求相位 <InlineMath math="\\phi(\\omega)" /> 必须是频率 <InlineMath math="\\omega" /> 的线性函数（线性相位 FIR 滤波器的特长）。
             </p>
           </div>
           

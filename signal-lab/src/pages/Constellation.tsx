@@ -1,3 +1,4 @@
+import InlineMath from "@/components/InlineMath";
 import { useCallback, useRef, useEffect, useMemo } from "react";
 import katex from "katex";
 import ModuleLayout from "@/components/ModuleLayout";
@@ -157,7 +158,7 @@ export default function Constellation() {
               1. 为什么要拆分正交信号 (I/Q)？
             </div>
             <p className="text-xs text-lab-text leading-relaxed">
-              在单路载波（如单纯的 $A\cos(\omega_c t)$）中，我们只能改变幅度（AM）或频率/相位（FM/PM）。
+              在单路载波（如单纯的 <InlineMath math="A\\cos(\\omega_c t)" />）中，我们只能改变幅度（AM）或频率/相位（FM/PM）。
               但数学上，<strong className="text-lab-cyan">余弦和正弦是正交的</strong>，这意味着把它们叠加后一起发送，在接收端通过相乘积分可以完全无干扰地把它们拆分开来。
               这样相当于在同一个频带上建立了两条独立的高速公路：<strong className="text-[#ff9100]">同相路 (I, In-phase)</strong> 和 <strong className="text-[#00e5ff]">正交路 (Q, Quadrature)</strong>。
             </p>
@@ -175,16 +176,16 @@ export default function Constellation() {
               星座图就是一个以 I 为横轴、Q 为纵轴的复平面。图上的每一个<strong className="text-lab-cyan">点 (Symbol)</strong>，代表了这一时刻发射信号的具体形态：
             </p>
             <ul className="text-xs text-lab-text list-disc pl-4 mt-2 space-y-1">
-              <li>横坐标：代表了发射波形中 <strong className="text-[#ff9100]">$\cos(\omega_c t)$</strong> 分量的幅度 (I)。</li>
-              <li>纵坐标：代表了发射波形中 <strong className="text-[#00e5ff]">$-\sin(\omega_c t)$</strong> 分量的幅度 (Q)。</li>
+              <li>横坐标：代表了发射波形中 <strong className="text-[#ff9100]"><InlineMath math="\\cos(\\omega_c t)" /></strong> 分量的幅度 (I)。</li>
+              <li>纵坐标：代表了发射波形中 <strong className="text-[#00e5ff]"><InlineMath math="-\\sin(\\omega_c t)" /></strong> 分量的幅度 (Q)。</li>
             </ul>
             <div 
               className="text-sm font-mono katex-wrapper my-2" 
               dangerouslySetInnerHTML={{ __html: amFormula }} 
             />
             <ul className="text-xs text-lab-text list-disc pl-4 space-y-1">
-              <li>该点到原点的<strong className="text-lab-green">距离</strong>：代表了合成信号的总幅度 $A$。</li>
-              <li>该点与原点的<strong className="text-lab-amber">连线角度</strong>：代表了合成信号的总相位 $\phi$。</li>
+              <li>该点到原点的<strong className="text-lab-green">距离</strong>：代表了合成信号的总幅度 <InlineMath math="A" />。</li>
+              <li>该点与原点的<strong className="text-lab-amber">连线角度</strong>：代表了合成信号的总相位 <InlineMath math="\\phi" />。</li>
             </ul>
           </div>
           

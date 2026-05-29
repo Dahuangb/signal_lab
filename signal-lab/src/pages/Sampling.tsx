@@ -1,3 +1,4 @@
+import InlineMath from "@/components/InlineMath";
 import { useCallback } from "react";
 import katex from "katex";
 import ModuleLayout from "@/components/ModuleLayout";
@@ -283,7 +284,7 @@ export default function Sampling() {
         <div className="p-4 rounded-lg bg-lab-bg/50 border border-lab-border text-sm text-lab-muted leading-relaxed">
           <h4 className="text-lab-text font-bold mb-2">为什么时域采样 = 频域周期复制？</h4>
           <div className="space-y-4 text-xs text-lab-muted leading-relaxed">
-            <p>1. <strong>时域相乘</strong>：理想采样可以看作是连续信号 $x(t)$ 与一个冲激序列（梳状函数）相乘：</p>
+            <p>1. <strong>时域相乘</strong>：理想采样可以看作是连续信号 <InlineMath math="x(t)" /> 与一个冲激序列（梳状函数）相乘：</p>
             <div
               className="text-sm font-mono katex-wrapper"
               dangerouslySetInnerHTML={{
@@ -293,7 +294,7 @@ export default function Sampling() {
                 ),
               }}
             />
-            <p>2. <strong>频域卷积</strong>：根据傅里叶变换的性质，时域的乘积等于频域的卷积。冲激序列的傅里叶变换仍然是冲激序列（间隔为 $f_s$）：</p>
+            <p>2. <strong>频域卷积</strong>：根据傅里叶变换的性质，时域的乘积等于频域的卷积。冲激序列的傅里叶变换仍然是冲激序列（间隔为 <InlineMath math="f_s" />）：</p>
             <div
               className="text-sm font-mono katex-wrapper"
               dangerouslySetInnerHTML={{
@@ -303,7 +304,7 @@ export default function Sampling() {
                 ),
               }}
             />
-            <p>3. <strong>周期搬移</strong>：任何频谱与冲激函数卷积，相当于把该频谱平移到冲激所在的位置。因此，采样后的频谱就是原频谱以 $f_s$ 为周期进行无数次复制拼接：</p>
+            <p>3. <strong>周期搬移</strong>：任何频谱与冲激函数卷积，相当于把该频谱平移到冲激所在的位置。因此，采样后的频谱就是原频谱以 <InlineMath math="f_s" /> 为周期进行无数次复制拼接：</p>
             <div
               className="text-sm font-mono katex-wrapper"
               dangerouslySetInnerHTML={{
@@ -326,7 +327,7 @@ export default function Sampling() {
             </li>
             <li>
               <span className="font-mono text-lab-amber bg-lab-amber/10 px-1 rounded">Nyquist 带宽 [-f_s/2, f_s/2]：</span>
-              实际数字系统能“看”到的频率范围。如果采样率 $f_s$ 较低（{"$f_s < 2f_{\\max}$"}），红色的“镜像频谱”就会侵入这个淡蓝色的观测区间内，导致<span className="font-bold text-lab-amber">频谱混叠（Aliasing）</span>，高频信号在数字域中被错误地“看作”了低频信号。
+              实际数字系统能“看”到的频率范围。如果采样率 <InlineMath math="f_s" /> 较低（<InlineMath math="f_s < 2f_{\\\\max}" />），红色的“镜像频谱”就会侵入这个淡蓝色的观测区间内，导致<span className="font-bold text-lab-amber">频谱混叠（Aliasing）</span>，高频信号在数字域中被错误地“看作”了低频信号。
             </li>
           </ul>
         </div>

@@ -1,3 +1,4 @@
+import InlineMath from "@/components/InlineMath";
 import { useCallback, useState } from "react";
 import katex from "katex";
 import ModuleLayout from "@/components/ModuleLayout";
@@ -270,8 +271,8 @@ export default function PoleZero() {
             </div>
             <div className="text-sm font-mono katex-wrapper mb-2" dangerouslySetInnerHTML={{ __html: zTransformFormula }} />
             <p className="text-xs text-lab-text leading-relaxed">
-              Z 变换中的 <strong className="text-lab-cyan">z 是一个任意的复数</strong>（即 {"$z = r e^{j\\omega}$"}）。<br/>
-              • 当 $r=1$ 时（即 {"$z = e^{j\\omega}$"}），我们就<strong>严格站在了单位圆上</strong>，此时 Z 变换就退化成了我们熟悉的离散时间傅里叶变换 (DTFT)。<br/>
+              Z 变换中的 <strong className="text-lab-cyan">z 是一个任意的复数</strong>（即 <InlineMath math="z = r e^{j\\\\omega}" />）。<br/>
+              • 当 <InlineMath math="r=1" /> 时（即 <InlineMath math="z = e^{j\\\\omega}" />），我们就<strong>严格站在了单位圆上</strong>，此时 Z 变换就退化成了我们熟悉的离散时间傅里叶变换 (DTFT)。<br/>
               • 为什么不只看单位圆？因为只有在整个复平面上，我们才能找到让多项式等于 0（零点）或无穷大（极点）的位置。它们就像隐藏在二维海面下的海底山脉和海沟，决定了海面（单位圆）上的波浪起伏。
             </p>
           </div>

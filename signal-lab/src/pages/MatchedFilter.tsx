@@ -1,3 +1,4 @@
+import InlineMath from "@/components/InlineMath";
 import { useCallback, useState, useEffect } from "react";
 import katex from "katex";
 import ModuleLayout from "@/components/ModuleLayout";
@@ -206,7 +207,7 @@ export default function MatchedFilter() {
             </div>
             <div className="text-sm font-mono katex-wrapper mb-3" dangerouslySetInnerHTML={{ __html: formula }} />
             <p className="text-xs text-lab-text leading-relaxed mt-2">
-              要让输出端的<strong className="text-lab-cyan">瞬时信噪比最大</strong>，滤波器的冲激响应 $h(t)$ 必须是输入信号 $s(t)$ 的<strong className="text-[#ff9100]">时间反转 (Time-reversed)</strong>，如果是复数还要取共轭。
+              要让输出端的<strong className="text-lab-cyan">瞬时信噪比最大</strong>，滤波器的冲激响应 <InlineMath math="h(t)" /> 必须是输入信号 <InlineMath math="s(t)" /> 的<strong className="text-[#ff9100]">时间反转 (Time-reversed)</strong>，如果是复数还要取共轭。
             </p>
           </div>
           

@@ -1,3 +1,4 @@
+import InlineMath from "@/components/InlineMath";
 import { useCallback, useState } from "react";
 import katex from "katex";
 import ModuleLayout from "@/components/ModuleLayout";
@@ -190,12 +191,12 @@ export default function CircularConv() {
             </div>
             <div className="text-sm font-mono katex-wrapper mb-2" dangerouslySetInnerHTML={{ __html: aliasFormula }} />
             <p className="text-xs text-lab-text leading-relaxed">
-              当我们用计算机（DFT/FFT）计算频域相乘时，系统计算所依赖的参数 $N$ 其实是由<strong className="text-lab-cyan">输入信号的长度</strong>决定的。如果不补零直接做 DFT，$N$ 就只能等于原信号的长度（发生混叠）。
+              当我们用计算机（DFT/FFT）计算频域相乘时，系统计算所依赖的参数 <InlineMath math="N" /> 其实是由<strong className="text-lab-cyan">输入信号的长度</strong>决定的。如果不补零直接做 DFT，<InlineMath math="N" /> 就只能等于原信号的长度（发生混叠）。
             </p>
             <p className="text-xs text-lab-text leading-relaxed mt-2 border-t border-lab-border/50 pt-2">
               <strong className="text-[#00ff88]">补零的本质作用：</strong><br/>
-              线性卷积的长度天然就是 $L+M-1$，这在物理上是固定不变的。<br/>
-              为了让系统在计算 DFT 时选择一个足够大的参数 $N$，我们必须人为地在时域末尾补零。补零并没有改变真实的线性卷积，而是<strong className="text-[#00ff88]">强迫计算机扩大它的计算窗口 $N$</strong>，从而满足不混叠条件：
+              线性卷积的长度天然就是 <InlineMath math="L+M-1" />，这在物理上是固定不变的。<br/>
+              为了让系统在计算 DFT 时选择一个足够大的参数 <InlineMath math="N" />，我们必须人为地在时域末尾补零。补零并没有改变真实的线性卷积，而是<strong className="text-[#00ff88]">强迫计算机扩大它的计算窗口 <InlineMath math="N" /></strong>，从而满足不混叠条件：
             </p>
             <div className="text-sm font-mono katex-wrapper mt-2 text-[#00ff88]" dangerouslySetInnerHTML={{ __html: lengthFormula }} />
           </div>

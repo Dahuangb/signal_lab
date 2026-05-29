@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Activity, Radio, Sigma, ArrowRight, Waves, Eye, Filter, Crosshair, Target, RefreshCw } from "lucide-react";
 import { useEffect, useRef } from "react";
+import katex from "katex";
 
 const courseCategories = [
   {
@@ -303,7 +304,7 @@ export default function Home() {
                       </div>
                       <p className="text-sm text-lab-cyan mb-3">{mod.question}</p>
                       <div className="p-3 rounded-lg bg-lab-bg/40 border border-lab-border/50 font-mono text-xs text-lab-muted overflow-hidden">
-                        <span className="katex-inline">${mod.formula}$</span>
+                        <span className="katex-inline" dangerouslySetInnerHTML={{ __html: katex.renderToString(mod.formula, { throwOnError: false }) }} />
                       </div>
                       <div className="mt-4 flex items-center gap-1 text-xs text-lab-muted group-hover:text-lab-cyan transition-colors">
                         <span>开始探索</span>

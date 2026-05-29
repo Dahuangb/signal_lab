@@ -1,3 +1,4 @@
+import InlineMath from "@/components/InlineMath";
 import { useCallback, useState } from "react";
 import katex from "katex";
 import ModuleLayout from "@/components/ModuleLayout";
@@ -146,11 +147,11 @@ export default function PicketFence() {
             </div>
             <p className="text-xs text-lab-text leading-relaxed">
               <strong className="text-lab-cyan">什么是栅栏效应？</strong><br/>
-              DFT 只是对连续的 DTFT 频谱在频域上的离散采样（采样间隔 $\Delta f = f_s / N$）。如果信号的真实频率恰好落在两个采样点之间，我们就无法在 DFT 结果中看到真实的峰值，就像透过栅栏看风景被挡住了一样。
+              DFT 只是对连续的 DTFT 频谱在频域上的离散采样（采样间隔 <InlineMath math="\\Delta f = f_s / N" />）。如果信号的真实频率恰好落在两个采样点之间，我们就无法在 DFT 结果中看到真实的峰值，就像透过栅栏看风景被挡住了一样。
             </p>
             <p className="text-xs text-lab-text leading-relaxed mt-2 border-t border-lab-border/50 pt-2">
               <strong className="text-[#00ff88]">如何解决？（补零）</strong><br/>
-              在时域信号尾部补零（Zero-padding），增加了 N 的长度，使得 $\Delta f$ 变小。它<span className="text-lab-amber">没有提高真实的物理分辨率</span>（主瓣宽度没变），但它在频域进行了更密集的插值，帮我们“看清”了原本栅栏缝隙间的峰值形状。
+              在时域信号尾部补零（Zero-padding），增加了 N 的长度，使得 <InlineMath math="\\Delta f" /> 变小。它<span className="text-lab-amber">没有提高真实的物理分辨率</span>（主瓣宽度没变），但它在频域进行了更密集的插值，帮我们“看清”了原本栅栏缝隙间的峰值形状。
             </p>
           </div>
         </div>
@@ -241,21 +242,21 @@ export default function PicketFence() {
             <strong className="text-[#00ff88] text-sm">数学推导：为什么补零能实现频域插值？</strong>
           </div>
           <p className="text-sm text-lab-muted leading-relaxed mb-2">
-            假设原信号长度为 $N$，我们在其末尾补零到长度 $M$ ($M &gt; N$)，得到新序列：
+            假设原信号长度为 <InlineMath math="N" />，我们在其末尾补零到长度 <InlineMath math="M" /> (<InlineMath math="M &gt; N" />)，得到新序列：
           </p>
           <div className="katex-wrapper text-center my-4 text-[#00ff88] text-lg" dangerouslySetInnerHTML={{ __html: zeroPaddingKatex1 }} />
           <p className="text-sm text-lab-muted leading-relaxed mb-2">
-            对补零后的序列做 $M$ 点 DFT：
+            对补零后的序列做 <InlineMath math="M" /> 点 DFT：
           </p>
           <div className="katex-wrapper text-center my-4 text-lab-cyan text-lg" dangerouslySetInnerHTML={{ __html: zeroPaddingKatex2 }} />
           <p className="text-sm text-lab-muted leading-relaxed mb-2">
-            由于大于 $N$ 的部分都是 $0$，所以求和上限依然是 $N-1$。这意味着**信号的物理能量和信息根本没有变**。改变的只是旋转因子中采样的分母变成了 $M$：
+            由于大于 <InlineMath math="N" /> 的部分都是 <InlineMath math="0" />，所以求和上限依然是 <InlineMath math="N-1" />。这意味着**信号的物理能量和信息根本没有变**。改变的只是旋转因子中采样的分母变成了 <InlineMath math="M" />：
           </p>
           <div className="katex-wrapper text-center my-4 text-[#ff9100] text-lg" dangerouslySetInnerHTML={{ __html: zeroPaddingKatex3 }} />
           <p className="text-sm text-lab-text leading-relaxed mt-4 border-t border-lab-border/50 pt-4">
             <strong className="text-lab-amber">结论：</strong><br/>
-            补零前，我们在连续的 DTFT 频谱 $X(e^&#123;j\omega&#125;)$ 上采了 $N$ 个点。<br/>
-            补零后，我们在<strong className="text-[#00ff88]">同一个连续频谱</strong>上采了 $M$ 个点。它<span className="text-lab-amber">没有提高真实的物理分辨率</span>（主瓣没变窄），但它在频域进行了更密集的插值，帮我们“看清”了原本栅栏缝隙间的真实波形。
+            补零前，我们在连续的 DTFT 频谱 <InlineMath math="X(e^&#123;j\\omega&#125;)" /> 上采了 <InlineMath math="N" /> 个点。<br/>
+            补零后，我们在<strong className="text-[#00ff88]">同一个连续频谱</strong>上采了 <InlineMath math="M" /> 个点。它<span className="text-lab-amber">没有提高真实的物理分辨率</span>（主瓣没变窄），但它在频域进行了更密集的插值，帮我们“看清”了原本栅栏缝隙间的真实波形。
           </p>
         </div>
       </div>
